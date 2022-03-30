@@ -1,0 +1,54 @@
+//
+//  RatingView.swift
+//  Bookworm
+//
+//  Created by Alexey Morozov on 14.03.2022.
+//
+
+import SwiftUI
+
+struct RatingView: View {
+    @Binding var rating: Int
+    
+    var label = ""
+    
+    var maxRating = 5
+    
+    var offImage: Image?
+    var onImage = Image(systemName: "star.fill")
+    
+    var offColor = Color.gray
+    var onColor = Color.yellow
+    
+    var body: some View {
+        HStack {
+            if !label.isEmpty {
+                Text(label)
+            }
+            
+            ForEach(1..<maxRating + 1, id: \.self) { score in
+                image(for: score)
+                    .foregroundColor(score > rating ? offColor : onColor)
+                    .onTapGesture {
+                        rating = score
+                    }
+                
+            }
+        }
+    }
+    
+    func image(for score: Int) -> Image {
+        if score > rating {
+            return offImage ?? onImage
+        } else {
+            return onImage
+        }
+    }
+}
+
+
+struct RatingView_Previews: PreviewProvider {
+    static var previews: some View {
+        RatingView(rating: .constant(4))
+    }
+}
